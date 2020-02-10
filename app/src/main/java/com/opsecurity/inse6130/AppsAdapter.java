@@ -20,13 +20,13 @@ import java.util.List;
 public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
 
     Context context1;
-    List<String> stringList;
+    List<AppModel> appList;
 
-    public AppsAdapter(Context context, List<String> list){
+    public AppsAdapter(Context context, List<AppModel> list){
 
         context1 = context;
 
-        stringList = list;
+        appList = list;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -60,33 +60,34 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position){
 
-        ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(context1);
+       // ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(context1);
 
-        final String ApplicationPackageName = (String) stringList.get(position);
-        String ApplicationLabelName = apkInfoExtractor.GetAppName(ApplicationPackageName);
-        Drawable drawable = apkInfoExtractor.getAppIconByPackageName(ApplicationPackageName);
+        final AppModel appItem =  appList.get(position);
+        //String ApplicationLabelName = apkInfoExtractor.GetAppName(ApplicationPackageName);
 
-        viewHolder.textView_App_Name.setText(ApplicationLabelName);
+       // Drawable drawable = apkInfoExtractor.getAppIconByPackageName(ApplicationPackageName);
 
-        viewHolder.textView_App_Package_Name.setText(ApplicationPackageName);
+        viewHolder.textView_App_Name.setText(appItem.getAppName());
 
-        viewHolder.imageView.setImageDrawable(drawable);
+        viewHolder.textView_App_Package_Name.setText(appItem.getPackageName());
+
+        viewHolder.imageView.setImageDrawable(appItem.getIcon());
 
         //Adding click listener on CardView to open clicked application directly from here .
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = context1.getPackageManager().getLaunchIntentForPackage(ApplicationPackageName);
+                /*Intent intent = context1.getPackageManager().getLaunchIntentForPackage(ApplicationPackageName);
                 if(intent != null){
 
                     context1.startActivity(intent);
 
                 }
-                else {
+                else {*/
 
-                    Toast.makeText(context1,ApplicationPackageName + " Error, Please Try Again.", Toast.LENGTH_LONG).show();
-                }
+                    Toast.makeText(context1,appItem.getPermissions()[0], Toast.LENGTH_LONG).show();
+              //  }
             }
         });
     }
@@ -94,7 +95,7 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
     @Override
     public int getItemCount(){
 
-        return stringList.size();
+        return appList.size();
     }
 
 }

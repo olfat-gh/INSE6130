@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -13,9 +14,7 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Juned on 4/15/2017.
- */
+
 
 public class ApkInfoExtractor {
 
@@ -26,9 +25,9 @@ public class ApkInfoExtractor {
         context1 = context2;
     }
 
-    public List<String> GetAllInstalledApkInfo(){
+    public List<AppModel> GetAllInstalledApkInfo(){
 
-        List<String> ApkPackageName = new ArrayList<>();
+        List<AppModel> AllAppModel = new ArrayList<>();
 
         Intent intent = new Intent(Intent.ACTION_MAIN,null);
 
@@ -44,11 +43,16 @@ public class ApkInfoExtractor {
 
             //if(!isSystemPackage(resolveInfo)){
 
-            ApkPackageName.add(activityInfo.applicationInfo.packageName);
+            AllAppModel.add(new AppModel(
+                    GetAppReqPermission(activityInfo.applicationInfo.packageName),
+                    GetAppName(activityInfo.applicationInfo.packageName),
+                    activityInfo.applicationInfo.packageName,
+                    isSystemPackage(resolveInfo),
+                    getAppIconByPackageName(activityInfo.applicationInfo.packageName)));
             // }
         }
 
-        return ApkPackageName;
+        return AllAppModel;
 
     }
 
@@ -72,6 +76,30 @@ public class ApkInfoExtractor {
             drawable = ContextCompat.getDrawable(context1, R.mipmap.ic_launcher);
         }
         return drawable;
+    }
+
+
+    public  String[] GetAppReqPermission(String ApkPackageName){
+
+
+
+
+        PackageManager packageManager = context1.getPackageManager();
+
+        try {
+
+            PackageInfo pkgInfo =packageManager.getPackageInfo(ApkPackageName,PackageManager.GET_PERMISSIONS);
+
+            if(pkgInfo!=null){
+
+                return pkgInfo.requestedPermissions;
+            }
+
+        }catch (PackageManager.NameNotFoundException e) {
+
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String GetAppName(String ApkPackageName){

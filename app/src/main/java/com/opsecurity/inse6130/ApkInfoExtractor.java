@@ -25,7 +25,7 @@ public class ApkInfoExtractor {
         context1 = context2;
     }
 
-    public List<AppModel> GetAllInstalledApkInfo(){
+    public List<AppModel> GetAllInstalledApkInfo(int IsSystem){
 
         List<AppModel> AllAppModel = new ArrayList<>();
 
@@ -41,15 +41,26 @@ public class ApkInfoExtractor {
 
             ActivityInfo activityInfo = resolveInfo.activityInfo;
 
-            //if(!isSystemPackage(resolveInfo)){
+            if(IsSystem==1 ){
+                if(isSystemPackage(resolveInfo)){
+                    AllAppModel.add(new AppModel(
+                            GetAppReqPermission(activityInfo.applicationInfo.packageName),
+                            GetAppName(activityInfo.applicationInfo.packageName),
+                            activityInfo.applicationInfo.packageName,
+                            isSystemPackage(resolveInfo),
+                            getAppIconByPackageName(activityInfo.applicationInfo.packageName)));
+                }
+            }else {
+                if(!isSystemPackage(resolveInfo)){
+                    AllAppModel.add(new AppModel(
+                            GetAppReqPermission(activityInfo.applicationInfo.packageName),
+                            GetAppName(activityInfo.applicationInfo.packageName),
+                            activityInfo.applicationInfo.packageName,
+                            isSystemPackage(resolveInfo),
+                            getAppIconByPackageName(activityInfo.applicationInfo.packageName)));
+                }
+            }
 
-            AllAppModel.add(new AppModel(
-                    GetAppReqPermission(activityInfo.applicationInfo.packageName),
-                    GetAppName(activityInfo.applicationInfo.packageName),
-                    activityInfo.applicationInfo.packageName,
-                    isSystemPackage(resolveInfo),
-                    getAppIconByPackageName(activityInfo.applicationInfo.packageName)));
-            // }
         }
 
         return AllAppModel;

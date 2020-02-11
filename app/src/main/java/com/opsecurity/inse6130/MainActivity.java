@@ -2,63 +2,30 @@ package com.opsecurity.inse6130;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
 
-import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.android.material.tabs.TabLayout;
+import com.opsecurity.inse6130.ui.SectionsPagerAdapter;
 
-import java.util.List;
+;
 
 public class MainActivity extends AppCompatActivity {
-    private Handler handler = new Handler();
-    List<AppModel> listApps=null;
-    RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager recyclerViewLayoutManager;
-    SpinKitView spinKitView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView =  findViewById(R.id.recycler_view);
-        spinKitView =findViewById(R.id.loading);
-        // Passing the column number 1 to show online one column in each row.
-        recyclerViewLayoutManager = new GridLayoutManager(MainActivity.this, 1);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this.getApplicationContext());
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(sectionsPagerAdapter);
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
 
-        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+        tabs.getTabAt(0).setIcon(R.drawable.outline_account_circle_black_18dp);
+        tabs.getTabAt(1).setIcon(R.drawable.outline_visibility_off_black_18dp);
 
-        fillData();
-
-        //spinKitView.setVisibility(View.GONE);
-        // recyclerView.setVisibility(View.VISIBLE);
-
-    }
-    public void fillData(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                listApps = new ApkInfoExtractor(MainActivity.this).GetAllInstalledApkInfo();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        adapter = new AppsAdapter(MainActivity.this,listApps);
-                        recyclerView.setAdapter(adapter);
-                        spinKitView.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                    }
-                });
-            }
-        }).start();
     }
 
 

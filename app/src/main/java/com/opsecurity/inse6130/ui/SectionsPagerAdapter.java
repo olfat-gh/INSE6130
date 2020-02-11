@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.opsecurity.inse6130.R;
+import com.opsecurity.inse6130.AppFragment;
 
 public class SectionsPagerAdapter  extends FragmentStatePagerAdapter {
     Context m_contexct=null;
@@ -22,9 +23,9 @@ public class SectionsPagerAdapter  extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new firstTabFrag();
+                return AppFragment.newInstance(0);
             case 1:
-                return new secondTabFrag();
+                return AppFragment.newInstance(1);
         }
         return null;
     }

@@ -90,9 +90,9 @@ public class ApkInfoExtractor {
     }
 
 
-    public  String[] GetAppReqPermission(String ApkPackageName){
+    public  List<PermissionModel> GetAppReqPermission(String ApkPackageName){
 
-
+        List<PermissionModel> permReq=new ArrayList<>();
 
 
         PackageManager packageManager = context1.getPackageManager();
@@ -101,16 +101,19 @@ public class ApkInfoExtractor {
 
             PackageInfo pkgInfo =packageManager.getPackageInfo(ApkPackageName,PackageManager.GET_PERMISSIONS);
 
-            if(pkgInfo!=null){
+            if(pkgInfo!=null && pkgInfo.requestedPermissions!=null){
+                for(String permName:pkgInfo.requestedPermissions)
+                        permReq.add(new PermissionModel(permName));
 
-                return pkgInfo.requestedPermissions;
+
+               // return pkgInfo.requestedPermissions;
             }
 
         }catch (PackageManager.NameNotFoundException e) {
 
             e.printStackTrace();
         }
-        return null;
+        return permReq;
     }
 
     public String GetAppName(String ApkPackageName){

@@ -1,18 +1,18 @@
 package com.opsecurity.inse6130;
 
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -78,6 +78,26 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
             @Override
             public void onClick(View view) {
 
+                Dialog dialog = new Dialog(context1);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(true);
+                dialog.setContentView(R.layout.dialog_permission_list);
+                dialog.getWindow().setLayout(-1,-2);
+
+                TextView textView = dialog.findViewById(R.id.app_name_title);
+                ImageView imageView =  dialog.findViewById(R.id.app_ic);
+                imageView.setImageDrawable(appItem.getIcon());
+                textView.setText(appItem.getAppName());
+                RecyclerView permListView =  dialog.findViewById(R.id.perm_recyclerView);
+
+                permListView.setLayoutManager(new LinearLayoutManager(context1));
+                permListView.setHasFixedSize(true);
+                PermissionAdapter adapter=new PermissionAdapter(context1,appItem.getPermissions());
+
+
+                permListView.setAdapter(adapter);
+
+                dialog.show();
                 /*Intent intent = context1.getPackageManager().getLaunchIntentForPackage(ApplicationPackageName);
                 if(intent != null){
 
@@ -86,7 +106,7 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
                 }
                 else {*/
 
-                    Toast.makeText(context1,appItem.getPermissions()[0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context1,appItem.getPermissions()[0], Toast.LENGTH_LONG).show();
               //  }
             }
         });

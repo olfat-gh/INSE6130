@@ -2,14 +2,16 @@ package com.opsecurity.inse6130;
 
 import android.graphics.drawable.Drawable;
 
+import java.util.List;
+
 
 public class AppModel {
     private String appName;
     private String packageName;
     private boolean isSystem;
-    private String[] permissions;
+    private List<PermissionModel> permissions;
     private Drawable icon;
-    public AppModel(String[] permissions,String name, String pkgName, boolean isSystem, Drawable drawable) {
+    public AppModel(List<PermissionModel> permissions,String name, String pkgName, boolean isSystem, Drawable drawable) {
 
         this.appName = name;
         this.packageName=pkgName;
@@ -18,8 +20,12 @@ public class AppModel {
         this.permissions=permissions;
     }
 
-    public String[] getPermissions() {
+    public List<PermissionModel> getPermissions() {
         return permissions;
+    }
+
+    public void setPermissions(List<PermissionModel> permissions) {
+        this.permissions = permissions;
     }
 
     public String getPackageName() {
@@ -38,9 +44,6 @@ public class AppModel {
         return icon;
     }
 
-    public void setPermissions(String[] permissions) {
-        this.permissions = permissions;
-    }
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;

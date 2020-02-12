@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="100dp"
+xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout android:orientation="horizontal" android:background="@color/colorPrimary" android:layout_width="fill_parent" android:layout_height="40dp">
+    <ImageView android:layout_gravity="center_vertical" android:id="@+id/app_ic"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="50dp" />
+    <TextView  android:gravity="start|center"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/app_name_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:text="app name" android:paddingStart="10dp" />
+</LinearLayout>
+<androidx.recyclerview.widget.RecyclerView android:id="@+id/perm_recyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+</LinearLayout>

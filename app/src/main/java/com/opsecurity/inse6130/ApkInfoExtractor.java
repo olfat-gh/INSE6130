@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PermissionGroupInfo;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 
@@ -29,13 +30,16 @@ public class ApkInfoExtractor {
 
         List<AppModel> AllAppModel = new ArrayList<>();
 
-        Intent intent = new Intent(Intent.ACTION_MAIN,null);
 
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        Intent intent = new Intent("android.intent.action.MAIN");
+       intent.addCategory("android.intent.category.LAUNCHER");
+       // Intent intent = new Intent(Intent.ACTION_MAIN,null);
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED );
+        //intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        List<ResolveInfo> resolveInfoList = context1.getPackageManager().queryIntentActivities(intent,0);
+       // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED );
+
+        List<ResolveInfo> resolveInfoList = context1.getPackageManager().queryIntentActivities(intent,PackageManager.GET_META_DATA);
 
         for(ResolveInfo resolveInfo : resolveInfoList){
 
@@ -90,20 +94,48 @@ public class ApkInfoExtractor {
     }
 
 
-    public  List<PermissionModel> GetAppReqPermission(String ApkPackageName){
+    public  List<PermissionGroupModel> GetAppReqPermission(String ApkPackageName){
 
-        List<PermissionModel> permReq=new ArrayList<>();
-
+        List<PermissionGroupModel> permReq=new ArrayList<>();
+        List<String> permAdded=new ArrayList<>();
 
         PackageManager packageManager = context1.getPackageManager();
 
         try {
 
             PackageInfo pkgInfo =packageManager.getPackageInfo(ApkPackageName,PackageManager.GET_PERMISSIONS);
-
+           // Log.v("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",ApkPackageName);
             if(pkgInfo!=null && pkgInfo.requestedPermissions!=null){
-                for(String permName:pkgInfo.requestedPermissions)
-                        permReq.add(new PermissionModel(permName));
+                    for (int i = 0; i < pkgInfo.requestedPermissions.length; i++) {
+                        String permName=pkgInfo.requestedPermissions[i];
+
+                   String gpName= packageManager.getPermissionInfo(permName,0).group;
+
+                    if(gpName!=null) {
+                        PermissionGroupInfo groupPermission = packageManager.getPermissionGroupInfo(
+                                gpName, 0);
+
+                        int indexOf = Constant.getDangerousPermissionsGroup().indexOf(groupPermission.name);
+                        if (indexOf >= 0) {
+                        CharSequence loadDescription = groupPermission.loadDescription(packageManager);
+                        Drawable loadIcon = groupPermission.loadIcon(packageManager);
+                       // String obj = groupPermission.loadLabel(packageManager).toString();
+
+                         if(!permAdded.contains(groupPermission.name)) {
+                                 boolean isGranted=false;
+                             if((pkgInfo.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED )!=0)
+                                 isGranted=true;
+                             permAdded.add(groupPermission.name);
+                             permReq.add(new PermissionGroupModel(groupPermission.name, loadDescription.toString(),loadIcon,isGranted));
+                            }
+                         }
+
+                    }
+
+
+
+                }
+
 
 
                // return pkgInfo.requestedPermissions;

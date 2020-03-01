@@ -9,9 +9,9 @@ public class AppModel {
     private String appName;
     private String packageName;
     private boolean isSystem;
-    private List<PermissionModel> permissions;
+    private List<PermissionGroupModel> permissions;
     private Drawable icon;
-    public AppModel(List<PermissionModel> permissions,String name, String pkgName, boolean isSystem, Drawable drawable) {
+    public AppModel(List<PermissionGroupModel> permissions, String name, String pkgName, boolean isSystem, Drawable drawable) {
 
         this.appName = name;
         this.packageName=pkgName;
@@ -20,11 +20,11 @@ public class AppModel {
         this.permissions=permissions;
     }
 
-    public List<PermissionModel> getPermissions() {
+    public List<PermissionGroupModel> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<PermissionModel> permissions) {
+    public void setPermissions(List<PermissionGroupModel> permissions) {
         this.permissions = permissions;
     }
 

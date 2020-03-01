@@ -10,7 +10,7 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 import com.opsecurity.inse6130.ui.SectionsPagerAdapter;
 
-;
+
 
 public class MainActivity extends AppCompatActivity {
     @Override

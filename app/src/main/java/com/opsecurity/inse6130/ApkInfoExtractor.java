@@ -126,7 +126,11 @@ public class ApkInfoExtractor {
                              if((pkgInfo.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED )!=0)
                                  isGranted=true;
                              permAdded.add(groupPermission.name);
-                             permReq.add(new PermissionGroupModel(groupPermission.name, loadDescription.toString(),loadIcon,isGranted));
+
+                             PermissionGroupModel itemTemp=new PermissionGroupModel(groupPermission.name, loadDescription.toString(),loadIcon,isGranted);
+                             itemTemp.setPkgName(ApkPackageName);
+                             itemTemp.setLableName(groupPermission.loadLabel(packageManager).toString());
+                             permReq.add(itemTemp);
                             }
                          }
 

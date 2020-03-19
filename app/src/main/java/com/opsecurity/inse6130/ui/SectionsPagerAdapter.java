@@ -10,41 +10,39 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.opsecurity.inse6130.R;
 import com.opsecurity.inse6130.AppFragment;
 
-public class SectionsPagerAdapter  extends FragmentStatePagerAdapter {
-    Context m_contexct=null;
+import java.util.ArrayList;
+import java.util.List;
 
-    public SectionsPagerAdapter(@NonNull FragmentManager fm,  Context nContext) {
+public class SectionsPagerAdapter  extends FragmentStatePagerAdapter {
+    List<Fragment> fragmentList = new ArrayList<>();
+    List<String> fragmentTitles = new ArrayList<>();
+
+    public SectionsPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
-        this.m_contexct=nContext;
+      //  this.m_contexct=nContext;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position){
-            case 0:
-                return AppFragment.newInstance(0);
-            case 1:
-                return AppFragment.newInstance(1);
-        }
-        return null;
+        return fragmentList.get(position);
     }
+
 
     @Override
     public int getCount() {
-        return 2;
+        return fragmentList.size();
     }
 
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position){
-            case 0: return m_contexct.getResources().getString(R.string.tab_text_1);
-            case 1: return m_contexct.getResources().getString(R.string.tab_text_2);
-            default:return "";
-        }
+        return fragmentTitles.get(position);
     }
-
+    public void addFragment(Fragment fragment, String name) {
+        fragmentList.add(fragment);
+        fragmentTitles.add(name);
+    }
 
 }
 

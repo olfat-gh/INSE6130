@@ -2,4 +2,8 @@
     <string name="app_name">INSE6130</string>
     <string name="tab_text_1">Installed</string>
     <string name="tab_text_2">System</string>
+    <string name="dialog_service_message">To start you must activate app in Accessibility Setting</string>
+    <string name="dialog_service_title">Service Permission</string>
+    <string name="dialog_service_ok">Ok</string>
+    <string name="dialog_service_cancel">Cancel</string>
 </resources>

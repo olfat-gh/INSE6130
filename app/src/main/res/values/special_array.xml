@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="perm_items">
+        <item>Display on top</item>
+        <item>Do not disturb</item>
+        <item>Change system settings</item>
+        <item>Notification access</item>
+        <item>Optimize battery usage</item>
+        <item>Usage data access</item>
+    </string-array>
+    
+    
+</resources>

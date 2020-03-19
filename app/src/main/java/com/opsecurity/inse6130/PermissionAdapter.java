@@ -1,16 +1,29 @@
 package com.opsecurity.inse6130;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
+import com.opsecurity.inse6130.service.GlobalPermissionService;
 
 import java.util.List;
 
@@ -42,7 +55,51 @@ public class PermissionAdapter  extends RecyclerView.Adapter<PermissionAdapter.V
         holder.textView_Desc_Name.setText(perItem.getDesc());
         holder.img_group_ic.setImageDrawable(perItem.getIcon());
         holder.Switch_switchGrant.setChecked(perItem.isGranted());
+        holder.Switch_switchGrant.setTag(perItem);
+        holder.Switch_switchGrant.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                PermissionGroupModel permSelected = (PermissionGroupModel) buttonView.getTag();
+                Toast.makeText(context1, permSelected.getPermName(), Toast.LENGTH_SHORT).show();
 
+                   if(!isServiceRunning()){
+                       AlertDialog.Builder builder = new AlertDialog.Builder(context1);
+                       builder.setMessage(R.string.dialog_service_message)
+                               .setTitle(R.string.dialog_service_title);
+                       builder.setPositiveButton(R.string.dialog_service_ok, new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               dialog.cancel();
+                               context1.startActivity(new Intent("android.settings.ACCESSIBILITY_SETTINGS"));
+                           }
+                       });
+                       builder.setNegativeButton(R.string.dialog_service_cancel, new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               dialog.cancel();
+                           }
+                       });
+                       AlertDialog create = builder.create();
+                       if (create != null) {
+                           create.setCancelable(false);
+                           create.show();
+                       }
+                   return;
+                   }
+                GlobalPermissionService.lblGroup=permSelected.getLableName();
+                GlobalPermissionService.doPermissionOpene=true;
+                GlobalPermissionService.doSecondBack=false;
+                GlobalPermissionService.isPermissionSeted=false;
+                Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                StringBuilder sb = new StringBuilder();
+                sb.append("package:");
+                sb.append(permSelected.getPkgName());
+                intent.setData(Uri.parse(sb.toString()));
+                context1.startActivity(intent);
+
+            }
+        });
     }
 
     @Override
@@ -65,6 +122,27 @@ public class PermissionAdapter  extends RecyclerView.Adapter<PermissionAdapter.V
             textView_Desc_Name= view.findViewById(R.id.perm_desc);
             Switch_switchGrant=view.findViewById(R.id.switchGrant);
         }
+    }
+
+    public boolean isServiceRunning(){
+        String myServiceName=context1.getPackageName()+
+                "/.service."+
+                com.opsecurity.inse6130.service.GlobalPermissionService.class.getSimpleName();
+        AccessibilityManager systemService =(AccessibilityManager) context1.getSystemService(context1.ACCESSIBILITY_SERVICE);
+        if (systemService != null) {
+            List<AccessibilityServiceInfo> enabledServices =
+                    systemService.getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK);
+            for (AccessibilityServiceInfo accessibilityServiceInfo : enabledServices) {
+                if(accessibilityServiceInfo!=null){
+                   // Log.v("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",accessibilityServiceInfo.getId());
+                   // Log.v("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",myServiceName);
+                    if(myServiceName.equals(accessibilityServiceInfo.getId()))
+                        return true;
+                }
+
+            }
+        }
+        return false;
     }
 
 }

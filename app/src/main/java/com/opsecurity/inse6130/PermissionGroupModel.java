@@ -4,7 +4,9 @@ import android.graphics.drawable.Drawable;
 
 public class PermissionGroupModel {
     private String permName;
+    private String lableName;
     private String desc;
+    private String pkgName;
     private boolean isGranted;
     private Drawable icon;
     public String getPermName() {
@@ -15,7 +17,15 @@ public class PermissionGroupModel {
         this.permName = permName;
     }
 
-    public PermissionGroupModel(String permName, String desc, Drawable icon,boolean isGranted){
+    public String getPkgName() {
+        return pkgName;
+    }
+
+    public void setPkgName(String pkgName) {
+        this.pkgName = pkgName;
+    }
+
+    public PermissionGroupModel(String permName, String desc, Drawable icon, boolean isGranted){
             this.permName=permName;
             this.desc=desc;
             this.icon=icon;
@@ -42,5 +52,13 @@ public class PermissionGroupModel {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getLableName() {
+        return lableName;
+    }
+
+    public void setLableName(String lableName) {
+        this.lableName = lableName;
     }
 }

@@ -18,4 +18,21 @@ public final class Constant {
     public static ArrayList<String> getDangerousPermissionsGroup() {
         return DANGEROUS_PERMISSIONS_GROUP;
     }
+    private static final ArrayList<String> APP_DETAIL_ACTIVITY_VALUE = new ArrayList<String>( Arrays.asList(
+            "com.android.settings.applications.InstalledAppDetailsTop",
+            "com.miui.appmanager.ApplicationsDetailsActivity"));
+
+    public static ArrayList<String> getAppDetailActivityValue() {
+        return APP_DETAIL_ACTIVITY_VALUE;
+    }
+
+    private static final ArrayList<String> APP_PERMISSION_PACKAGE_VALUE = new ArrayList<String>( Arrays.asList(
+            "com.miui.securitycenter",
+            "com.miui.appmanager",
+            "com.android.packageinstaller",
+            "com.google.android.packageinstaller"));
+
+    public static ArrayList<String> getAppPermissionPackageValue() {
+        return APP_PERMISSION_PACKAGE_VALUE;
+    }
 }

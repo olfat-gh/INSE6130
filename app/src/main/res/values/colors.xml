@@ -6,6 +6,8 @@
     <color name="colorLoader">#4F4FFF</color>
     <color name="colorBlack">#000000</color>
     <color name="light_gray">#cccccc</color>
+    <color name="some_darker_blue_color">#1976d2</color>
+    <color name="some_lighter_gray_color">#cfd8dc</color>
     <color name="gray">#808080</color>
 </resources>
 

@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.opsecurity.inse6130.ui.SectionsPagerAdapter;
+import com.opsecurity.inse6130.adapter.SectionsPagerAdapter;
 
 public class AllAppFragment extends Fragment {
 

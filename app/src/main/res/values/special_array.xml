@@ -10,5 +10,12 @@
         <item>Usage data access</item>
     </string-array>
     
-    
+    <array name="ic2_items">
+        <item>@drawable/ic_subscriptions_black_24dp</item>
+        <item>@drawable/ic_do_not_disturb_black_24dp</item>
+        <item>@drawable/ic_settings_black_24dp</item>
+        <item>@drawable/ic_notifications_active_black_24dp</item>
+        <item>@drawable/ic_battery_unknown_black_24dp</item>
+        <item>@drawable/ic_perm_data_setting_black_24dp</item>
+    </array>
 </resources>

@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.opsecurity.inse6130.adapter.AppsAdapter;
+import com.opsecurity.inse6130.model.AppModel;
+import com.opsecurity.inse6130.utility.ApkInfoExtractor;
 
 import java.util.List;
 

@@ -1,14 +1,9 @@
-package com.opsecurity.inse6130.ui;
-
-import android.content.Context;
+package com.opsecurity.inse6130.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-
-import com.opsecurity.inse6130.R;
-import com.opsecurity.inse6130.AppFragment;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.opsecurity.inse6130;
+package com.opsecurity.inse6130.utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;

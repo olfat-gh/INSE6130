@@ -1,4 +1,4 @@
-package com.opsecurity.inse6130;
+package com.opsecurity.inse6130.utility;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,11 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
+
+import com.opsecurity.inse6130.R;
+import com.opsecurity.inse6130.model.AppModel;
+import com.opsecurity.inse6130.model.PermissionGroupModel;
+import com.opsecurity.inse6130.utility.Constant;
 
 import java.util.ArrayList;
 import java.util.List;

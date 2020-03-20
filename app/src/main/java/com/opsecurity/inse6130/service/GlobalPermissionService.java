@@ -6,13 +6,12 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
 
-import com.opsecurity.inse6130.Constant;
+import com.opsecurity.inse6130.utility.Constant;
 
 import java.util.List;
 

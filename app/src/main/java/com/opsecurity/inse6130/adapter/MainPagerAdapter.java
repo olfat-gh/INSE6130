@@ -1,4 +1,4 @@
-package com.opsecurity.inse6130.ui;
+package com.opsecurity.inse6130.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

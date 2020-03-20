@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.opsecurity.inse6130.ui.MainPagerAdapter;
+import com.opsecurity.inse6130.adapter.MainPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

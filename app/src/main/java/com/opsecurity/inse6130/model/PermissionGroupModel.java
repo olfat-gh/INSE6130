@@ -1,4 +1,4 @@
-package com.opsecurity.inse6130;
+package com.opsecurity.inse6130.model;
 
 import android.graphics.drawable.Drawable;
 

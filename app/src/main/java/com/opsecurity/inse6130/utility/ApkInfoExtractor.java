@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -18,6 +19,8 @@ import com.opsecurity.inse6130.model.PermissionGroupModel;
 import com.opsecurity.inse6130.utility.Constant;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -30,6 +33,61 @@ public class ApkInfoExtractor {
 
         context1 = context2;
     }
+    public ArrayList<ApplicationInfo> GetAllInstalledApkByScan() {
+        ArrayList arrayList = new ArrayList();
+        String packageName = context1.getPackageName();
+        PackageManager packageManager = context1.getPackageManager();
+        for (ApplicationInfo applicationInfo : packageManager.getInstalledApplications(PackageManager.GET_META_DATA)) {
+            if (!packageName.equals(applicationInfo.processName)) {
+                arrayList.add(applicationInfo);
+            }
+        }
+        return arrayList;
+    }
+
+     public AppModel GetAppModelByScan(ApplicationInfo applicationInfo){
+
+         List<PermissionGroupModel> tmp=new ArrayList<>();
+
+       return new AppModel(tmp,
+                 GetAppName(applicationInfo.packageName),
+                 applicationInfo.packageName,
+                 isSystemPackage(applicationInfo),
+                 getAppIconByPackageName(applicationInfo.packageName),GetAppPermissionsScore(applicationInfo));
+
+    }
+
+
+public int GetAppPermissionsScore(ApplicationInfo applicationInfo){
+        int permissionsScore=0;
+    PackageManager packageManager = context1.getPackageManager();
+    try {
+        PackageInfo pkgInfo = packageManager.getPackageInfo(applicationInfo.packageName, PackageManager.GET_PERMISSIONS);
+        String[] strArr =pkgInfo.requestedPermissions;
+        if (strArr != null) {
+            for (String permName : strArr) {
+
+
+                if (Constant.getDangerousPermissionsScore().containsKey(permName.toLowerCase())) {
+                    permissionsScore+= Constant.getDangerousPermissionsScore().get(permName.toLowerCase());
+
+                }
+
+            }
+        }
+
+
+    }catch (PackageManager.NameNotFoundException e) {
+
+        // e.printStackTrace();
+    }
+
+
+return  permissionsScore;
+
+  }
+
+
 
     public List<AppModel> GetAllInstalledApkInfo(int IsSystem){
 
@@ -37,12 +95,7 @@ public class ApkInfoExtractor {
 
 
         Intent intent = new Intent("android.intent.action.MAIN");
-       intent.addCategory("android.intent.category.LAUNCHER");
-       // Intent intent = new Intent(Intent.ACTION_MAIN,null);
-
-        //intent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-       // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED );
+        intent.addCategory("android.intent.category.LAUNCHER");
 
         List<ResolveInfo> resolveInfoList = context1.getPackageManager().queryIntentActivities(intent,PackageManager.GET_META_DATA);
 
@@ -51,6 +104,36 @@ public class ApkInfoExtractor {
             ActivityInfo activityInfo = resolveInfo.activityInfo;
 
             if(IsSystem==1 ){
+                if(isSystemPackage(resolveInfo)){
+
+                    List<PermissionGroupModel> tmp= GetAppReqPermission(activityInfo.applicationInfo.packageName);
+                    if(tmp.size()>0){
+                        AllAppModel.add(new AppModel(tmp
+                                ,
+                                GetAppName(activityInfo.applicationInfo.packageName),
+                                activityInfo.applicationInfo.packageName,
+                                isSystemPackage(resolveInfo),
+                                getAppIconByPackageName(activityInfo.applicationInfo.packageName)));
+                    }
+
+                }
+            }else {
+                if(!isSystemPackage(resolveInfo)){
+                    List<PermissionGroupModel> tmp= GetAppReqPermission(activityInfo.applicationInfo.packageName);
+                    if(tmp.size()>0){
+                        AllAppModel.add(new AppModel(tmp
+                                ,
+                                GetAppName(activityInfo.applicationInfo.packageName),
+                                activityInfo.applicationInfo.packageName,
+                                isSystemPackage(resolveInfo),
+                                getAppIconByPackageName(activityInfo.applicationInfo.packageName)));
+                    }
+                }
+            }
+
+
+
+/*            if(IsSystem==1 ){
                 if(isSystemPackage(resolveInfo)){
                     AllAppModel.add(new AppModel(
                             GetAppReqPermission(activityInfo.applicationInfo.packageName),
@@ -68,9 +151,17 @@ public class ApkInfoExtractor {
                             isSystemPackage(resolveInfo),
                             getAppIconByPackageName(activityInfo.applicationInfo.packageName)));
                 }
-            }
+            }*/
 
         }
+        Collections.sort(AllAppModel, new Comparator<AppModel>() {
+            @Override
+            public int compare(AppModel o1, AppModel o2) {
+                return String.CASE_INSENSITIVE_ORDER.compare(o1.getAppName(), o2.getAppName());
+
+            }
+        });
+
 
         return AllAppModel;
 
@@ -79,6 +170,10 @@ public class ApkInfoExtractor {
     public boolean isSystemPackage(ResolveInfo resolveInfo){
 
         return ((resolveInfo.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+    }
+    public boolean isSystemPackage(ApplicationInfo applicationInfo){
+
+        return ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
 
     public Drawable getAppIconByPackageName(String ApkTempPackageName){
@@ -120,6 +215,8 @@ public class ApkInfoExtractor {
                         PermissionGroupInfo groupPermission = packageManager.getPermissionGroupInfo(
                                 gpName, 0);
 
+
+                       // Log.v("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx11",permName);
                         int indexOf = Constant.getDangerousPermissionsGroup().indexOf(groupPermission.name);
                         if (indexOf >= 0) {
                         CharSequence loadDescription = groupPermission.loadDescription(packageManager);
@@ -128,8 +225,10 @@ public class ApkInfoExtractor {
 
                          if(!permAdded.contains(groupPermission.name)) {
                                  boolean isGranted=false;
-                             if((pkgInfo.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED )!=0)
+                             if((pkgInfo.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED )!=0){
                                  isGranted=true;
+
+                             }
                              permAdded.add(groupPermission.name);
 
                              PermissionGroupModel itemTemp=new PermissionGroupModel(groupPermission.name, loadDescription.toString(),loadIcon,isGranted);
@@ -152,7 +251,7 @@ public class ApkInfoExtractor {
 
         }catch (PackageManager.NameNotFoundException e) {
 
-            e.printStackTrace();
+           // e.printStackTrace();
         }
         return permReq;
     }

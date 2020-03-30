@@ -40,6 +40,7 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
         public ImageView imageView;
         public TextView textView_App_Name;
         public TextView textView_App_Package_Name;
+        public TextView textView_perm_score;
         public ImageView imageViewDanger;
 
 
@@ -52,6 +53,7 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
             imageViewDanger =  view.findViewById(R.id.imageviewdanger);
             textView_App_Name =  view.findViewById(R.id.Apk_Name);
             textView_App_Package_Name =  view.findViewById(R.id.Apk_Package_Name);
+            textView_perm_score =  view.findViewById(R.id.perm_score);
         }
     }
 
@@ -77,11 +79,23 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
 
         viewHolder.textView_App_Name.setText(appItem.getAppName());
 
-        viewHolder.textView_App_Package_Name.setText(appItem.getPackageName());
+        if(!appItem.isScoreType()){
+            viewHolder.textView_App_Package_Name.setText(appItem.getPackageName());
+        }else{
+            if(appItem.isSystem())
+             viewHolder.textView_App_Package_Name.setText("System");
+            else
+             viewHolder.textView_App_Package_Name.setText("User");
+
+
+            viewHolder.textView_perm_score.setText(String.valueOf(appItem.getPermissionsScore()));
+
+        }
+
 
         viewHolder.imageView.setImageDrawable(appItem.getIcon());
         viewHolder.imageViewDanger.setImageResource(R.drawable.ic_warning_black_24dp);
-       if(appItem.getPermissions().size()>0)
+       if(appItem.hasGranted())
             viewHolder.imageViewDanger.setVisibility(View.VISIBLE);
         else
             viewHolder.imageViewDanger.setVisibility(View.INVISIBLE);
@@ -135,5 +149,11 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder>{
 
         return appList.size();
     }
+    public void clear() {
 
+        appList.clear();
+
+        notifyDataSetChanged();
+
+    }
 }

@@ -30,7 +30,10 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager_main);
 
         fragmentList.add(new AllAppFragment());
+        fragmentList.add(new ScanFragment());
         fragmentList.add(new SpecialFragment());
+
+
         MainPagerAdapter mpAdapter = new MainPagerAdapter(getSupportFragmentManager(),fragmentList);
         viewPager.setAdapter(mpAdapter);
         btmNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -41,9 +44,14 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_allapps:
                         viewPager.setCurrentItem(0);
                         return true;
-                    case R.id.nav_special:
+                    case R.id.nav_scanapps:
                         viewPager.setCurrentItem(1);
                         return true;
+                    case R.id.nav_special:
+                        viewPager.setCurrentItem(2);
+                        return true;
+
+
                 }
 
                 return false;

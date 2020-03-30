@@ -21,8 +21,8 @@
             >
             <ImageView
                 android:id="@+id/imageview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="6dp"
                 />
 
@@ -35,6 +35,17 @@
                android:minWidth="40dp"
 android:minHeight="40dp"
                 tools:src="@drawable/ic_warning_black_24dp" />
+
+            <TextView
+                android:id="@+id/perm_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+
 
             <TextView
                 android:id="@+id/Apk_Name"
